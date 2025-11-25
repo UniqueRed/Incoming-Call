@@ -29,5 +29,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: black;
-  margin-top: calc(env(safe-area-inset-top) * -1);
+  margin: 0;
+}
+
+.caller-image-wrapper {
+  position: relative;
+  width: 100%;
+
+  /* Push into the notch */
+  padding-top: env(safe-area-inset-top);
+  margin-top: calc(-1 * env(safe-area-inset-top));
+}
+
+.caller-image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }

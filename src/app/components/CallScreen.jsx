@@ -1,5 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Phone, X, Check, Volume2, Video, MicOff, UserPlus, Grid3x3 } from 'lucide-react';
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Phone,
+  X,
+  Check,
+  Volume2,
+  Video,
+  MicOff,
+  UserPlus,
+  Grid3x3,
+} from "lucide-react";
 import { IoIosAlarm, IoIosKeypad } from "react-icons/io";
 import { IoVideocam } from "react-icons/io5";
 import { TbMessageCircleFilled } from "react-icons/tb";
@@ -17,8 +26,8 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
     if (activeCall.ringtone && !callAnswered) {
       const playRingtone = () => {
         if (audioRef.current) {
-          audioRef.current.play().catch(err => {
-            console.log('Audio play failed:', err);
+          audioRef.current.play().catch((err) => {
+            console.log("Audio play failed:", err);
           });
         }
       };
@@ -56,7 +65,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
   useEffect(() => {
     if (callAnswered) {
       timerIntervalRef.current = setInterval(() => {
-        setCallDuration(prev => prev + 1);
+        setCallDuration((prev) => prev + 1);
       }, 1000);
 
       return () => {
@@ -76,17 +85,17 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     setCallAnswered(true);
   };
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-  const isBackgroundMode = activeCall.mode === 'background';
+  const isBackgroundMode = activeCall.mode === "background";
 
   if (isBackgroundMode) {
     // iOS-style background mode
@@ -98,7 +107,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
         )}
 
         {/* Background Image - No Blur */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${activeCall.image})` }}
         />
@@ -107,10 +116,14 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
         <div className="relative h-full flex flex-col justify-between p-6 text-white">
           {/* Top Section - Caller Name */}
           <div className="w-full text-center pt-15">
-            <h1 className="text-5xl font-light mb-3 drop-shadow-lg">{activeCall.name}</h1>
-            <p className="text-xl opacity-80 drop-shadow-md">
-              {callAnswered ? formatTime(callDuration) : 'mobile'}
-            </p>
+            <div className="caller-image-wrapper w-full text-center">
+              <h1 className="text-5xl font-light mb-3 drop-shadow-lg">
+                {activeCall.name}
+              </h1>
+              <p className="text-xl opacity-80 drop-shadow-md">
+                {callAnswered ? formatTime(callDuration) : "mobile"}
+              </p>
+            </div>
           </div>
 
           {/* Bottom Section - Actions */}
@@ -119,11 +132,21 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
               {/* Quick Actions - No Button Styling */}
               <div className="flex justify-between gap-20 items-center px-8 m-0">
                 <button className="flex flex-col items-center gap-3 w-20 h-20">
-                  <IoIosAlarm size={32} className="drop-shadow-lg" fill="white" stroke="white" strokeWidth={2}/>
+                  <IoIosAlarm
+                    size={32}
+                    className="drop-shadow-lg"
+                    fill="white"
+                    stroke="white"
+                    strokeWidth={2}
+                  />
                   <span className="text-sm drop-shadow">Remind Me</span>
                 </button>
                 <button className="flex flex-col items-center gap-3 w-20 h-20">
-                  <TbMessageCircleFilled size={32} className="drop-shadow-lg" fill="white"/>
+                  <TbMessageCircleFilled
+                    size={32}
+                    className="drop-shadow-lg"
+                    fill="white"
+                  />
                   <span className="text-sm drop-shadow">Message</span>
                 </button>
               </div>
@@ -135,7 +158,12 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
                   className="flex flex-col items-center gap-3"
                 >
                   <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
-                    <Phone size={32} className="rotate-135deg" fill="white" strokeWidth={0.5}/>
+                    <Phone
+                      size={32}
+                      className="rotate-135deg"
+                      fill="white"
+                      strokeWidth={0.5}
+                    />
                   </div>
                   <span className="text-sm drop-shadow">Decline</span>
                 </button>
@@ -145,7 +173,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
                   className="flex flex-col items-center gap-3"
                 >
                   <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
-                    <Phone size={32} fill="white" strokeWidth={0.5}/>
+                    <Phone size={32} fill="white" strokeWidth={0.5} />
                   </div>
                   <span className="text-sm drop-shadow">Accept</span>
                 </button>
@@ -190,7 +218,12 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
                   className="flex flex-col items-center gap-2"
                 >
                   <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
-                    <Phone size={32} className="rotate-135deg" fill="white" strokeWidth={0.5}/>
+                    <Phone
+                      size={32}
+                      className="rotate-135deg"
+                      fill="white"
+                      strokeWidth={0.5}
+                    />
                   </div>
                   <span className="text-xs drop-shadow">End</span>
                 </button>
@@ -224,9 +257,11 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
           alt={activeCall.name}
           className="w-48 h-48 rounded-full object-cover border-4 border-white/30 shadow-2xl animate-pulse-slow mb-8"
         />
-        <h1 className="text-5xl font-light text-white mb-2">{activeCall.name}</h1>
+        <h1 className="text-5xl font-light text-white mb-2">
+          {activeCall.name}
+        </h1>
         <p className="text-xl text-gray-400">
-          {callAnswered ? formatTime(callDuration) : 'Incoming Call...'}
+          {callAnswered ? formatTime(callDuration) : "Incoming Call..."}
         </p>
       </div>
 
@@ -285,7 +320,12 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
               className="flex flex-col items-center gap-2"
             >
               <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
-                <Phone size={28} className="rotate-135deg" fill="white" strokeWidth={0.5}/>
+                <Phone
+                  size={28}
+                  className="rotate-135deg"
+                  fill="white"
+                  strokeWidth={0.5}
+                />
               </div>
               <span className="text-xs text-gray-300">End</span>
             </button>
@@ -302,8 +342,13 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
 
       <style jsx>{`
         @keyframes pulse-slow {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
         }
         .animate-pulse-slow {
           animation: pulse-slow 2s ease-in-out infinite;
