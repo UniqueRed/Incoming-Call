@@ -98,9 +98,13 @@ export default function FakeCallApp() {
   const handleRingtoneUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Check if it's an audio file
-      if (!file.type.startsWith('audio/')) {
-        alert('Please upload an audio file (MP3, WAV, etc.)');
+      // Check if it's an audio file - accept common formats
+      const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/x-m4a', 'audio/aac', 'audio/mp4'];
+      const validExtensions = ['.mp3', '.wav', '.m4a', '.aac'];
+      const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+      
+      if (!validTypes.includes(file.type) && !validExtensions.includes(fileExtension)) {
+        alert('Please upload an audio file (MP3, WAV, M4A, or AAC)');
         return;
       }
 

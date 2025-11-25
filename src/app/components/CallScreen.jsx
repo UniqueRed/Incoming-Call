@@ -106,10 +106,10 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
         {/* iOS-style Call Interface */}
         <div className="relative h-full flex flex-col justify-between p-6 text-white">
           {/* Top Section - Caller Name */}
-          <div className="w-full text-center pt-20">
+          <div className="w-full text-center pt-15">
             <h1 className="text-4xl font-light mb-3 drop-shadow-lg">{activeCall.name}</h1>
             <p className="text-lg opacity-80 drop-shadow-md">
-              {callAnswered ? formatTime(callDuration) : 'Incoming'}
+              {callAnswered ? formatTime(callDuration) : 'mobile'}
             </p>
           </div>
 

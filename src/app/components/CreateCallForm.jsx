@@ -165,19 +165,19 @@ export default function CreateCallForm({
         <input
           type="file"
           id="ringtoneInput"
-          accept="audio/*"
+          accept="audio/mpeg,audio/mp3,audio/wav,audio/x-m4a,audio/aac,.mp3,.wav,.m4a,.aac"
           onChange={onRingtoneUpload}
           className="hidden"
         />
         {ringtone ? (
           <div className="flex items-center gap-2 p-2.5 bg-zinc-50 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-800 rounded-md">
-            <Music size={16} className="text-zinc-600 dark:text-zinc-400 shrink-0" />
+            <Music size={16} className="text-zinc-600 dark:text-zinc-400 flex-shrink-0" />
             <span className="text-sm text-zinc-900 dark:text-white truncate flex-1">
               {ringtoneName}
             </span>
             <button
               onClick={onRemoveRingtone}
-              className="shrink-0 w-6 h-6 flex items-center justify-center rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
             >
               <X size={14} className="text-zinc-600 dark:text-zinc-400" />
             </button>
