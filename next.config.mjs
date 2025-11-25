@@ -2,10 +2,11 @@ import withPWA from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config) => config,
   experimental: {
-    serverActions: {}, // fix the error
-    webpackBuildWorker: false, // disable Turbopack
+    serverActions: {},
   },
+  turbopack: {},
 };
 
 export default withPWA({
