@@ -12,9 +12,9 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: '#ffffff',
-  appleMobileWebAppCapable: 'yes',
-  appleMobileWebAppStatusBarStyle: 'black-translucent',
+  viewportFit: "cover",
+  appleMobileWebAppCapable: "yes",
+  appleMobileWebAppStatusBarStyle: "black-translucent",
 };
 
 export default function RootLayout({ children }) {

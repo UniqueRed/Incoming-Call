@@ -22,9 +22,12 @@
 
 html {
   scroll-behavior: smooth;
+  background: black;
 }
 
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: black;
+  margin-top: calc(env(safe-area-inset-top) * -1);
 }
