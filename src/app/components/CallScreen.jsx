@@ -10,7 +10,7 @@ import {
   Grid3x3,
 } from "lucide-react";
 import { IoIosAlarm, IoIosKeypad } from "react-icons/io";
-import { IoVideocam } from "react-icons/io5";
+import { IoVideocam, IoVolumeHigh } from "react-icons/io5";
 import { TbMessageCircleFilled } from "react-icons/tb";
 import { BsMicMuteFill, BsPersonFillAdd } from "react-icons/bs";
 
@@ -160,7 +160,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
                   <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
                     <Phone
                       size={32}
-                      className="rotate-135deg"
+                      className="rotate-[135deg]"
                       fill="white"
                       strokeWidth={0.5}
                     />
@@ -186,7 +186,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
                 {/* Row 1 */}
                 <button className="flex flex-col items-center gap-2">
                   <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center active:scale-95 transition-transform backgrop-blur-[5px]">
-                    <Volume2 size={32} className="text-white" />
+                    <IoVolumeHigh size={32} className="text-white" />
                   </div>
                   <span className="text-xs drop-shadow">Audio</span>
                 </button>
@@ -220,7 +220,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
                   <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
                     <Phone
                       size={32}
-                      className="rotate-135deg"
+                      className="rotate-[135deg]"
                       fill="white"
                       strokeWidth={0.5}
                     />
