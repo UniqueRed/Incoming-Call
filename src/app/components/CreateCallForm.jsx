@@ -1,14 +1,18 @@
 import React from 'react';
-import { Phone, Upload, Save, Camera, User, Image as ImageIcon, Crop } from 'lucide-react';
+import { Phone, Upload, Save, Camera, User, Image as ImageIcon, Crop, Music, X } from 'lucide-react';
 
 export default function CreateCallForm({
   currentImage,
   callerName,
   callMode,
+  ringtone,
+  ringtoneName,
   editingTemplate,
   onImageUpload,
   onNameChange,
   onModeChange,
+  onRingtoneUpload,
+  onRemoveRingtone,
   onStartCall,
   onSaveTemplate,
   onCancelEdit,
@@ -110,7 +114,7 @@ export default function CreateCallForm({
       </div>
 
       {/* Call Mode Selector */}
-      <div className="mb-5">
+      <div className="mb-4">
         <label className="block text-sm font-medium text-zinc-900 dark:text-white mb-2">
           Style
         </label>
@@ -151,6 +155,44 @@ export default function CreateCallForm({
             </div>
           </button>
         </div>
+      </div>
+
+      {/* Ringtone Upload */}
+      <div className="mb-5">
+        <label className="block text-sm font-medium text-zinc-900 dark:text-white mb-2">
+          Ringtone <span className="text-zinc-500 dark:text-zinc-400 font-normal">(optional)</span>
+        </label>
+        <input
+          type="file"
+          id="ringtoneInput"
+          accept="audio/*"
+          onChange={onRingtoneUpload}
+          className="hidden"
+        />
+        {ringtone ? (
+          <div className="flex items-center gap-2 p-2.5 bg-zinc-50 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-800 rounded-md">
+            <Music size={16} className="text-zinc-600 dark:text-zinc-400 flex-shrink-0" />
+            <span className="text-sm text-zinc-900 dark:text-white truncate flex-1">
+              {ringtoneName}
+            </span>
+            <button
+              onClick={onRemoveRingtone}
+              className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+            >
+              <X size={14} className="text-zinc-600 dark:text-zinc-400" />
+            </button>
+          </div>
+        ) : (
+          <label
+            htmlFor="ringtoneInput"
+            className="cursor-pointer flex items-center justify-center gap-2 p-2.5 bg-white dark:bg-zinc-900 border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-md hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+          >
+            <Music size={16} className="text-zinc-400 dark:text-zinc-600" />
+            <span className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+              Upload (max 30s)
+            </span>
+          </label>
+        )}
       </div>
 
       {/* Action Buttons */}

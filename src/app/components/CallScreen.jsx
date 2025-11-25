@@ -1,15 +1,63 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Phone, X, Check } from 'lucide-react';
 import { IoIosAlarm } from "react-icons/io";
 import { TbMessageCircleFilled } from "react-icons/tb";
 
 export default function CallScreen({ activeCall, onDecline, onAccept }) {
+  const audioRef = useRef(null);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    // Play ringtone if available
+    if (activeCall.ringtone) {
+      const playRingtone = () => {
+        if (audioRef.current) {
+          audioRef.current.play().catch(err => {
+            console.log('Audio play failed:', err);
+          });
+        }
+      };
+
+      // Play immediately
+      playRingtone();
+
+      // Set up interval to play with 3 second gap
+      const scheduleNext = () => {
+        if (audioRef.current) {
+          audioRef.current.onended = () => {
+            timeoutRef.current = setTimeout(() => {
+              playRingtone();
+            }, 3000); // 3 second gap
+          };
+        }
+      };
+
+      scheduleNext();
+
+      // Cleanup
+      return () => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }
+  }, [activeCall.ringtone]);
+
   const isBackgroundMode = activeCall.mode === 'background';
 
   if (isBackgroundMode) {
     // iOS-style background mode
     return (
       <div className="fixed inset-0 animate-fade-in">
+        {/* Hidden audio element for ringtone */}
+        {activeCall.ringtone && (
+          <audio ref={audioRef} src={activeCall.ringtone} preload="auto" />
+        )}
+
         {/* Background Image - No Blur */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -19,9 +67,9 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
         {/* iOS-style Call Interface */}
         <div className="relative h-full flex flex-col justify-between p-6 text-white">
           {/* Top Section - Caller Name */}
-          <div className="w-full text-center pt-15">
+          <div className="w-full text-center pt-20">
             <h1 className="text-4xl font-light mb-3 drop-shadow-lg">{activeCall.name}</h1>
-            <p className="text-lg opacity-80 drop-shadow-md">mobile</p>
+            <p className="text-lg opacity-80 drop-shadow-md">Incoming</p>
           </div>
 
           {/* Bottom Section - Actions */}
@@ -45,7 +93,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
                 className="flex flex-col items-center gap-3"
               >
                 <div className="w-24 h-24 bg-red-500 rounded-full flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
-                  <Phone size={40} className="rotate-135deg" fill="white" strokeWidth={0.5}/>
+                  <Phone size={40} className="rotate-[135deg]" fill="white" strokeWidth={0.5}/>
                 </div>
                 <span className="text-sm drop-shadow">Decline</span>
               </button>
@@ -68,7 +116,12 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
 
   // Profile mode (original style)
   return (
-    <div className="fixed inset-0 bg-linear-to-br from-gray-900 to-gray-800 flex flex-col items-center justify-between p-10 animate-fade-in">
+    <div className="fixed inset-0 bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col items-center justify-between p-10 animate-fade-in">
+      {/* Hidden audio element for ringtone */}
+      {activeCall.ringtone && (
+        <audio ref={audioRef} src={activeCall.ringtone} preload="auto" />
+      )}
+
       {/* Caller Info */}
       <div className="flex-1 flex flex-col items-center justify-center">
         <img

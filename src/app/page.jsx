@@ -6,6 +6,7 @@ import CreateCallForm from './components/CreateCallForm';
 import TemplatesGrid from './components/TemplatesGrid';
 import CallScreen from './components/CallScreen';
 import ImageCropModal from './components/ImageCropModal';
+import DeleteConfirmModal from './components/DeleteConfirmModal';
 
 export default function FakeCallApp() {
   const [currentImage, setCurrentImage] = useState(null);
@@ -14,11 +15,15 @@ export default function FakeCallApp() {
   const [showCropModal, setShowCropModal] = useState(false);
   const [callerName, setCallerName] = useState('');
   const [callMode, setCallMode] = useState('profile');
+  const [ringtone, setRingtone] = useState(null); // Audio file
+  const [ringtoneName, setRingtoneName] = useState('');
   const [templates, setTemplates] = useState([]);
   const [showCallScreen, setShowCallScreen] = useState(false);
   const [activeCall, setActiveCall] = useState(null);
   const [editingTemplate, setEditingTemplate] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [templateToDelete, setTemplateToDelete] = useState(null);
 
   // Load dark mode preference
   useEffect(() => {
@@ -90,6 +95,42 @@ export default function FakeCallApp() {
     }
   };
 
+  const handleRingtoneUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check if it's an audio file
+      if (!file.type.startsWith('audio/')) {
+        alert('Please upload an audio file (MP3, WAV, etc.)');
+        return;
+      }
+
+      // Create a temporary audio element to check duration
+      const audio = new Audio();
+      const reader = new FileReader();
+      
+      reader.onload = (event) => {
+        audio.src = event.target.result;
+        audio.onloadedmetadata = () => {
+          if (audio.duration > 30) {
+            alert('Ringtone must be 30 seconds or less. Please upload a shorter audio file.');
+            return;
+          }
+          
+          // If valid, store the ringtone
+          setRingtone(event.target.result);
+          setRingtoneName(file.name);
+        };
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeRingtone = () => {
+    setRingtone(null);
+    setRingtoneName('');
+  };
+
   const saveTemplate = () => {
     if (!currentImage) {
       alert('Please upload an image first!');
@@ -103,7 +144,7 @@ export default function FakeCallApp() {
     if (editingTemplate) {
       setTemplates(templates.map(t => 
         t.id === editingTemplate.id 
-          ? { ...t, name: callerName, image: currentImage, originalImage: originalImage, mode: callMode }
+          ? { ...t, name: callerName, image: currentImage, originalImage: originalImage, mode: callMode, ringtone: ringtone, ringtoneName: ringtoneName }
           : t
       ));
       setEditingTemplate(null);
@@ -114,6 +155,8 @@ export default function FakeCallApp() {
         image: currentImage,
         originalImage: originalImage, // Store original for re-cropping later
         mode: callMode,
+        ringtone: ringtone,
+        ringtoneName: ringtoneName,
         favorited: false
       };
       setTemplates([...templates, newTemplate]);
@@ -123,6 +166,8 @@ export default function FakeCallApp() {
     setOriginalImage(null);
     setCallerName('');
     setCallMode('profile');
+    setRingtone(null);
+    setRingtoneName('');
   };
 
   const startCall = () => {
@@ -138,7 +183,8 @@ export default function FakeCallApp() {
     const callData = {
       name: callerName,
       image: currentImage,
-      mode: callMode
+      mode: callMode,
+      ringtone: ringtone
     };
     
     setActiveCall(callData);
@@ -156,6 +202,8 @@ export default function FakeCallApp() {
     setOriginalImage(template.originalImage || template.image); // Use original if available
     setCallerName(template.name);
     setCallMode(template.mode || 'profile');
+    setRingtone(template.ringtone || null);
+    setRingtoneName(template.ringtoneName || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -165,6 +213,8 @@ export default function FakeCallApp() {
     setOriginalImage(null);
     setCallerName('');
     setCallMode('profile');
+    setRingtone(null);
+    setRingtoneName('');
   };
 
   const toggleFavorite = (id) => {
@@ -174,9 +224,22 @@ export default function FakeCallApp() {
   };
 
   const deleteTemplate = (id) => {
-    if (window.confirm('Delete this template?')) {
-      setTemplates(templates.filter(t => t.id !== id));
+    const template = templates.find(t => t.id === id);
+    setTemplateToDelete(template);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (templateToDelete) {
+      setTemplates(templates.filter(t => t.id !== templateToDelete.id));
+      setDeleteModalOpen(false);
+      setTemplateToDelete(null);
     }
+  };
+
+  const cancelDelete = () => {
+    setDeleteModalOpen(false);
+    setTemplateToDelete(null);
   };
 
   const declineCall = () => {
@@ -216,10 +279,14 @@ export default function FakeCallApp() {
               currentImage={currentImage}
               callerName={callerName}
               callMode={callMode}
+              ringtone={ringtone}
+              ringtoneName={ringtoneName}
               editingTemplate={editingTemplate}
               onImageUpload={handleImageUpload}
               onNameChange={setCallerName}
               onModeChange={setCallMode}
+              onRingtoneUpload={handleRingtoneUpload}
+              onRemoveRingtone={removeRingtone}
               onStartCall={startCall}
               onSaveTemplate={saveTemplate}
               onCancelEdit={cancelEdit}
@@ -247,6 +314,15 @@ export default function FakeCallApp() {
           initialMode={callMode}
           onComplete={handleCropComplete}
           onCancel={handleCropCancel}
+        />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && templateToDelete && (
+        <DeleteConfirmModal
+          templateName={templateToDelete.name}
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
         />
       )}
     </div>
