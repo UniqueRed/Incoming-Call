@@ -21,7 +21,7 @@ export default function CallScreen({ activeCall, onDecline, onAccept }) {
           {/* Top Section - Caller Name */}
           <div className="w-full text-center pt-15">
             <h1 className="text-4xl font-light mb-3 drop-shadow-lg">{activeCall.name}</h1>
-            <p className="text-lg opacity-80 drop-shadow-md">Incoming</p>
+            <p className="text-lg opacity-80 drop-shadow-md">mobile</p>
           </div>
 
           {/* Bottom Section - Actions */}

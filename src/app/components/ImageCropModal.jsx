@@ -50,7 +50,7 @@ export default function ImageCropModal({ image, initialMode, onComplete, onCance
       </div>
 
       {/* Crop Area */}
-      <div className="flex-1 relative bg-zinc-50 dark:bg-zinc-950">
+      <div className="flex-1 relative bg-zinc-50 dark:bg-zinc-950 overflow-hidden">
         <Cropper
           image={image}
           crop={crop}
@@ -73,40 +73,42 @@ export default function ImageCropModal({ image, initialMode, onComplete, onCance
           }}
         />
 
-        {/* iOS Background Mode Preview Overlay */}
+        {/* iOS Background Mode Preview Overlay - Only on the crop area */}
         {callMode === 'background' && (
-          <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6 text-white">
-            {/* Top Section - Caller Name */}
-            <div className="w-full text-center pt-20">
-              <h1 className="text-4xl font-light mb-3 drop-shadow-lg">Caller Name</h1>
-              <p className="text-lg opacity-80 drop-shadow-md">Incoming</p>
-            </div>
-
-            {/* Bottom Section - Actions */}
-            <div className="w-full space-y-16 pb-4">
-              {/* Quick Actions */}
-              <div className="flex justify-between gap-20 items-center px-8 m-0">
-                <button className="flex flex-col items-center gap-3 w-24 h-24 opacity-70">
-                  <div className="w-8 h-8 rounded-full bg-white/30"></div>
-                  <span className="text-sm drop-shadow">Remind Me</span>
-                </button>
-                <button className="flex flex-col items-center gap-3 w-24 h-24 opacity-70">
-                  <div className="w-8 h-8 rounded-full bg-white/30"></div>
-                  <span className="text-sm drop-shadow">Message</span>
-                </button>
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="h-full flex flex-col justify-between p-4 sm:p-6 text-white">
+              {/* Top Section - Caller Name */}
+              <div className="w-full text-center pt-12 sm:pt-20">
+                <h1 className="text-2xl sm:text-4xl font-light mb-2 sm:mb-3 drop-shadow-lg">Caller Name</h1>
+                <p className="text-sm sm:text-lg opacity-80 drop-shadow-md">Incoming</p>
               </div>
 
-              {/* Main Call Actions */}
-              <div className="flex justify-between gap-20 items-center px-8">
-                <button className="flex flex-col items-center gap-3 opacity-70">
-                  <div className="w-24 h-24 bg-red-500 rounded-full"></div>
-                  <span className="text-sm drop-shadow">Decline</span>
-                </button>
+              {/* Bottom Section - Actions */}
+              <div className="w-full space-y-8 sm:space-y-16 pb-2 sm:pb-4">
+                {/* Quick Actions */}
+                <div className="flex justify-between gap-12 sm:gap-20 items-center px-4 sm:px-8">
+                  <button className="flex flex-col items-center gap-2 sm:gap-3 opacity-70">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/30"></div>
+                    <span className="text-xs sm:text-sm drop-shadow">Remind Me</span>
+                  </button>
+                  <button className="flex flex-col items-center gap-2 sm:gap-3 opacity-70">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/30"></div>
+                    <span className="text-xs sm:text-sm drop-shadow">Message</span>
+                  </button>
+                </div>
 
-                <button className="flex flex-col items-center gap-3 opacity-70">
-                  <div className="w-24 h-24 bg-green-500 rounded-full"></div>
-                  <span className="text-sm drop-shadow">Accept</span>
-                </button>
+                {/* Main Call Actions */}
+                <div className="flex justify-between gap-12 sm:gap-20 items-center px-4 sm:px-8">
+                  <button className="flex flex-col items-center gap-2 sm:gap-3 opacity-70">
+                    <div className="w-16 h-16 sm:w-24 sm:h-24 bg-red-500 rounded-full"></div>
+                    <span className="text-xs sm:text-sm drop-shadow">Decline</span>
+                  </button>
+
+                  <button className="flex flex-col items-center gap-2 sm:gap-3 opacity-70">
+                    <div className="w-16 h-16 sm:w-24 sm:h-24 bg-green-500 rounded-full"></div>
+                    <span className="text-xs sm:text-sm drop-shadow">Accept</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -114,7 +116,7 @@ export default function ImageCropModal({ image, initialMode, onComplete, onCance
       </div>
 
       {/* Controls */}
-      <div className="bg-white dark:bg-zinc-900 border-t-2 border-zinc-200 dark:border-zinc-800 p-4 space-y-4">
+      <div className="bg-white dark:bg-zinc-900 border-t-2 border-zinc-200 dark:border-zinc-800 p-4 space-y-4 max-h-[40vh] overflow-y-auto">
         {/* Mode Selector */}
         <div>
           <label className="block text-sm font-medium text-zinc-900 dark:text-white mb-2">
